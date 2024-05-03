@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,8 +8,9 @@ import {
 } from "@/components/ui/card";
 import api from "@/http/api";
 import { useQuery } from "@tanstack/react-query";
+import { PencilIcon } from "lucide-react";
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const ViewUser = () => {
   const { id } = useParams();
@@ -30,8 +32,18 @@ const ViewUser = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>View User</CardTitle>
-        <CardDescription>View User Details</CardDescription>
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <CardTitle>View User</CardTitle>
+            <CardDescription>View User Details</CardDescription>
+          </div>
+          <Link to={`/users/edit/${data?.id}`}>
+            <Button variant="outline">
+              <PencilIcon className="w-4 h-4 mr-2" />
+              Edit
+            </Button>
+          </Link>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-4">
@@ -122,6 +134,14 @@ const ViewUser = () => {
                     month: "long",
                     day: "numeric",
                   })}
+                </dd>
+              </div>
+              <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+                <dt className="truncate text-sm font-medium text-gray-500">
+                  Role
+                </dt>
+                <dd className="mt-1 text-xl font-semibold tracking-tight text-gray-900">
+                  {data?.role}
                 </dd>
               </div>
             </CardContent>

@@ -1,6 +1,12 @@
 import { queryClient } from "@/App";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -18,36 +24,56 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import api from "@/http/api";
-import userValidationSchema from "@/validations/user.validation";
+import menuValidationSchema, {
+  updateMenuValidationSchema,
+} from "@/validations/menu.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { SendHorizonalIcon } from "lucide-react";
-import React from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Edit, SendHorizonalIcon } from "lucide-react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const CreateUser = () => {
+const EditMenu = () => {
+  const { id } = useParams();
+  const [menu, setMenu] = React.useState(null);
   const navigate = useNavigate();
   const mutation = useMutation({
-    mutationFn: (data) => api.post("/users", data),
+    mutationFn: (data) => api.put(`/menu/${id}`, data),
     onSuccess: () => {
-      toast.success("User created successfully");
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      navigate("/users", { replace: true });
+      toast.success("Menu updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["menu"] });
+      navigate("/menu", { replace: true });
     },
     onError: (error) => {
       toast.error(error?.response?.data?.message || error.message);
     },
   });
+
+  // fetch menu
+  useEffect(() => {
+    (async () => {
+      await api
+        .get(`/menu/${id}`)
+        .then((res) => {
+          //   console.log(res.data.data);
+          setMenu(res.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })();
+  }, [id]);
+
   const form = useForm({
-    resolver: zodResolver(userValidationSchema),
+    resolver: zodResolver(updateMenuValidationSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      role: "USER",
+      breakfast: "",
+      lunch: "",
+      dinner: "",
     },
+    values: menu,
   });
 
   const handleSubmit = (data) => {
@@ -56,7 +82,8 @@ const CreateUser = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create User</CardTitle>
+        <CardTitle>Create Menu</CardTitle>
+        <CardDescription>Create a new menu for the hostel.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -66,12 +93,12 @@ const CreateUser = () => {
           >
             <FormField
               control={form.control}
-              name="name"
+              name="breakfast"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>Dish name for breakfast</FormLabel>
                   <FormControl>
-                    <Input placeholder="Full Name" {...field} type="text" />
+                    <Input placeholder="Dish name" {...field} type="text" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -79,12 +106,12 @@ const CreateUser = () => {
             />
             <FormField
               control={form.control}
-              name="email"
+              name="lunch"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Dish name for lunch</FormLabel>
                   <FormControl>
-                    <Input placeholder="Email" {...field} type="email" />
+                    <Input placeholder="Dish name" {...field} type="text" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -92,36 +119,13 @@ const CreateUser = () => {
             />
             <FormField
               control={form.control}
-              name="password"
+              name="dinner"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Dish name for dinner</FormLabel>
                   <FormControl>
-                    <Input placeholder="Password" {...field} type="password" />
+                    <Input placeholder="Dish name" {...field} type="text" />
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Role</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field?.value}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="USER">User</SelectItem>
-                      <SelectItem value="MANAGER">Manager</SelectItem>
-                      <SelectItem value="ADMIN">Admin</SelectItem>
-                    </SelectContent>
-                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -137,4 +141,4 @@ const CreateUser = () => {
   );
 };
 
-export default CreateUser;
+export default EditMenu;

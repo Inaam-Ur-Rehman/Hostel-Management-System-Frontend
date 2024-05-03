@@ -117,7 +117,13 @@ const ViewRoom = () => {
         )}
         <CardFooter>
           <Button
-            onClick={() => mutation.mutate()}
+            onClick={() => {
+              const confirmation = confirm("Are you sure you want to delete?");
+              if (confirmation) {
+                mutation.mutate();
+              }
+              return;
+            }}
             disabled={mutation.isPending}
             loading={mutation.isPending}
             variant="destructive"

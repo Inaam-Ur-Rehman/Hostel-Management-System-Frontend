@@ -1,26 +1,23 @@
 import { useAuthStore } from "@/store";
 import { Fragment, useEffect, useState } from "react";
 import {
+  Bed,
   Bell,
   CircleUser,
   Home,
   LineChart,
   Menu,
+  MessageCircleQuestion,
   Package,
   Package2,
   Search,
   ShoppingCart,
+  SquarePlus,
   Users,
+  UtensilsCrossed,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,20 +26,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Logo from "@/assets/logo.svg";
-import {
-  Link,
-  Navigate,
-  Outlet,
-  redirect,
-  useNavigate,
-} from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigation } from "react-router-dom";
 import api from "@/http/api";
 import { useQuery } from "@tanstack/react-query";
 
 const AdminLayout = () => {
+  const { pathname } = useLocation();
   const user = useAuthStore((state) => state.user);
   useEffect(() => {
     (async () => {
@@ -52,13 +43,46 @@ const AdminLayout = () => {
     })();
   }, []);
 
+  const menu = [
+    {
+      name: "Dashboard",
+      icon: <Home className="h-6 w-6" />,
+      path: "/",
+    },
+    {
+      name: "Rooms",
+      icon: <Bed className="h-6 w-6" />,
+      path: "/rooms",
+    },
+    {
+      name: "Users",
+      icon: <CircleUser className="h-6 w-6" />,
+      path: "/users",
+    },
+    {
+      name: "Menu",
+      icon: <UtensilsCrossed className="h-6 w-6" />,
+      path: "/menu",
+    },
+    {
+      name: "Assign Room",
+      icon: <SquarePlus className="h-6 w-6" />,
+      path: "/assign-room",
+    },
+    {
+      name: "User Requests",
+      icon: <MessageCircleQuestion className="h-6 w-6" />,
+      path: "/user-requests",
+    },
+  ];
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link to="/" className="flex items-center gap-2 font-semibold">
-              <img src={Logo} alt="Logo" className="h-16 w-28" />
+              <img src={Logo} alt="Logo" className="h-16 w-36" />
             </Link>
             <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
               <Bell className="h-4 w-4" />
@@ -66,35 +90,19 @@ const AdminLayout = () => {
             </Button>
           </div>
           <div className="flex-1">
-            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              <Link
-                to="/"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Home className="h-4 w-4" />
-                Dashboard
-              </Link>
-              <Link
-                to="/rooms"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <ShoppingCart className="h-4 w-4" />
-                Rooms
-              </Link>
-              <Link
-                to="users"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Users className="h-4 w-4" />
-                Users
-              </Link>
-              <Link
-                to="assign-room"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Users className="h-4 w-4" />
-                Assign Room
-              </Link>
+            <nav className="grid items-start px-2 text-lg font-medium lg:px-4">
+              {menu?.map(({ name, icon, path }) => (
+                <Link
+                  key={path}
+                  to={path}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary
+                    ${path === pathname ? "text-primary" : ""}
+                  `}
+                >
+                  {icon}
+                  {name}
+                </Link>
+              ))}
             </nav>
           </div>
         </div>
@@ -121,34 +129,18 @@ const AdminLayout = () => {
                   <Package2 className="h-6 w-6" />
                   <span className="sr-only">Acme Inc</span>
                 </Link>
-                <Link
-                  to="/"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Home className="h-5 w-5" />
-                  Dashboard
-                </Link>
-                <Link
-                  to="/rooms"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
-                >
-                  <ShoppingCart className="h-5 w-5" />
-                  Rooms
-                </Link>
-                <Link
-                  to="/users"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Package className="h-5 w-5" />
-                  Users
-                </Link>
-                <Link
-                  to="/assign-room"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Package className="h-5 w-5" />
-                  Assign Room
-                </Link>
+
+                {menu?.map(({ name, icon, path }) => (
+                  <Link
+                    key={path}
+                    to={path}
+                    className={`mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                    ${path === pathname ? "text-primary" : ""}`}
+                  >
+                    {icon}
+                    {name}
+                  </Link>
+                ))}
               </nav>
             </SheetContent>
           </Sheet>
@@ -161,12 +153,10 @@ const AdminLayout = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuLabel>Options</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem
+                className="cursor-pointer"
                 onClick={() => {
                   useAuthStore.getState().logout();
                   window.location.replace("/login");

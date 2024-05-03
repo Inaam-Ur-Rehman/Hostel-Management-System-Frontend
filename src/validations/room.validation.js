@@ -36,4 +36,8 @@ const roomValidationSchema = z.object({
     .default("AVAILABLE"),
 });
 
+export const updateRoomValidationSchema = roomValidationSchema.omit({
+  roomNumber: true,
+});
+
 export default roomValidationSchema;

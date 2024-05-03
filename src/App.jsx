@@ -9,16 +9,25 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import AdminLayout from "./layouts/AdminLayout";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Rooms from "./pages/rooms";
-import ViewRoom from "./pages/rooms/ViewRoom";
-import Users from "./pages/users";
-import EditUser from "./pages/users/EditUser";
-import CreateUser from "./pages/users/CreateUser";
-import CreateProfile from "./pages/profile/CreateProfile";
-import AssignRoom from "./pages/AssignRoom";
-import ViewUser from "./pages/users/ViewUser";
+import {
+  Home,
+  Rooms,
+  ViewRoom,
+  Users,
+  ViewUser,
+  EditUser,
+  CreateUser,
+  CreateProfile,
+  AssignRoom,
+  Menu,
+  CreateMenu,
+  EditMenu,
+  Login,
+  UserRequests,
+  ViewUserRequest,
+  Complaints,
+  ViewComplaint,
+} from "./pages";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -70,6 +79,34 @@ const router = createBrowserRouter([
       {
         path: "assign-room",
         element: <AssignRoom />,
+      },
+      {
+        path: "menu",
+        element: <Menu />,
+      },
+      {
+        path: "menu/create",
+        element: <CreateMenu />,
+      },
+      {
+        path: "menu/edit/:id",
+        element: <EditMenu />,
+      },
+      {
+        path: "user-requests",
+        element: <UserRequests />,
+      },
+      {
+        path: "user-requests/view/:id",
+        element: <ViewUserRequest />,
+      },
+      {
+        path: "complaints",
+        element: <Complaints />,
+      },
+      {
+        path: "complaints/view/:id",
+        element: <ViewComplaint />,
       },
     ],
   },

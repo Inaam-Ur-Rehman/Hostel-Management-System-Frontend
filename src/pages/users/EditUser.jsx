@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -31,6 +32,7 @@ import { updateUserValidationSchema } from "@/validations/user.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  EyeIcon,
   ImageIcon,
   SendHorizonalIcon,
   SendIcon,
@@ -38,12 +40,23 @@ import {
 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { redirect, useNavigate, useParams } from "react-router-dom";
+import { Link, redirect, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Edit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const deleteMutation = useMutation({
+    mutationFn: (data) => api.post("/rooms/unassign", data),
+    onSuccess: () => {
+      toast.success("User removed successfully");
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      navigate("/users", { replace: true });
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || error.message);
+    },
+  });
   const mutation = useMutation({
     mutationFn: (data) => api.put(`/users/${id}`, data),
     onSuccess: () => {
@@ -490,6 +503,48 @@ const Edit = () => {
               </form>
             </Form>
           </CardContent>
+          <CardFooter>
+            {user?.roomId && (
+              <div>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Room</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p>Room Number: {user?.room?.roomNumber}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <div className="flex items-center gap-4">
+                      <Link to={`/rooms/view/${user?.roomId}`}>
+                        <Button variant="outline">
+                          <EyeIcon className="w-4 h-4 mr-2" />
+                          View Room
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          const confirmation = confirm(
+                            "Are you really want to unassign room"
+                          );
+                          if (confirmation) {
+                            deleteMutation.mutate({
+                              userId: user?.id,
+                              roomId: user?.roomId,
+                            });
+                          }
+                          return;
+                        }}
+                      >
+                        <TrashIcon className="w-4 h-4 mr-2" />
+                        Unassign Room
+                      </Button>
+                    </div>
+                  </CardFooter>
+                </Card>
+              </div>
+            )}
+          </CardFooter>
         </Card>
       )}
     </div>

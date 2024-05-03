@@ -25,16 +25,24 @@ const menuValidationSchema = z.object({
     })
     .min(3, "Breakfast must be at least 3 characters long")
     .max(50, "Breakfast is too long"),
-  lunch: z.string({
-    required_error: "Lunch is required",
-    message: "Lunch must be a string",
-    invalid_type_error: "Lunch must be a string",
-  }),
-  dinner: z.string({
-    required_error: "Dinner is required",
-    message: "Dinner must be a string",
-    invalid_type_error: "Dinner must be a string",
-  }),
+  lunch: z
+    .string({
+      required_error: "Lunch is required",
+      message: "Lunch must be a string",
+      invalid_type_error: "Lunch must be a string",
+    })
+    .min(3, "Lunch must be at least 3 characters long")
+    .max(50, "Lunch is too long"),
+  dinner: z
+    .string({
+      required_error: "Dinner is required",
+      message: "Dinner must be a string",
+      invalid_type_error: "Dinner must be a string",
+    })
+    .min(3, "Dinner must be at least 3 characters long")
+    .max(50, "Dinner is too long"),
 });
-
+export const updateMenuValidationSchema = menuValidationSchema.omit({
+  day: true,
+});
 export default menuValidationSchema;

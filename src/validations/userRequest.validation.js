@@ -30,4 +30,11 @@ const userRequestValidationSchema = z.object({
     .default("PENDING"),
 });
 
+export const updateUserRequestValidationSchema =
+  userRequestValidationSchema.omit({
+    userId: true,
+    type: true,
+    message: true,
+  });
+
 export default userRequestValidationSchema;

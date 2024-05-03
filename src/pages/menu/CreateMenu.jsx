@@ -1,6 +1,12 @@
 import { queryClient } from "@/App";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -18,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import api from "@/http/api";
-import userValidationSchema from "@/validations/user.validation";
+import menuValidationSchema from "@/validations/menu.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { SendHorizonalIcon } from "lucide-react";
@@ -27,36 +33,38 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const CreateUser = () => {
+const CreateMenu = () => {
   const navigate = useNavigate();
   const mutation = useMutation({
-    mutationFn: (data) => api.post("/users", data),
+    mutationFn: (data) => api.post("/menu", data),
     onSuccess: () => {
-      toast.success("User created successfully");
-      queryClient.invalidateQueries({ queryKey: ["users"] });
-      navigate("/users", { replace: true });
+      toast.success("Menu created successfully");
+      queryClient.invalidateQueries({ queryKey: ["menu"] });
+      navigate("/menu", { replace: true });
     },
     onError: (error) => {
       toast.error(error?.response?.data?.message || error.message);
     },
   });
   const form = useForm({
-    resolver: zodResolver(userValidationSchema),
+    resolver: zodResolver(menuValidationSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      role: "USER",
+      day: "",
+      breakfast: "",
+      lunch: "",
+      dinner: "",
     },
   });
 
   const handleSubmit = (data) => {
     mutation.mutate(data);
   };
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create User</CardTitle>
+        <CardTitle>Create Menu</CardTitle>
+        <CardDescription>Create a new menu for the hostel.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -66,62 +74,66 @@ const CreateUser = () => {
           >
             <FormField
               control={form.control}
-              name="name"
+              name="day"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Full Name" {...field} type="text" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Email" {...field} type="email" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Password" {...field} type="password" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Role</FormLabel>
+                  <FormLabel>Day</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field?.value}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Role" />
+                      <SelectValue placeholder="Select Day" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="USER">User</SelectItem>
-                      <SelectItem value="MANAGER">Manager</SelectItem>
-                      <SelectItem value="ADMIN">Admin</SelectItem>
+                      <SelectItem value="MONDAY">Monday</SelectItem>
+                      <SelectItem value="TUESDAY">Tuesday</SelectItem>
+                      <SelectItem value="WEDNESDAY">Wednesday</SelectItem>
+                      <SelectItem value="THURSDAY">Thursday</SelectItem>
+                      <SelectItem value="FRIDAY">Friday</SelectItem>
+                      <SelectItem value="SATURDAY">Saturday</SelectItem>
+                      <SelectItem value="SUNDAY">Sunday</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="breakfast"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Dish name for breakfast</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Dish name" {...field} type="text" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lunch"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Dish name for lunch</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Dish name" {...field} type="text" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="dinner"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Dish name for dinner</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Dish name" {...field} type="text" />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -137,4 +149,4 @@ const CreateUser = () => {
   );
 };
 
-export default CreateUser;
+export default CreateMenu;

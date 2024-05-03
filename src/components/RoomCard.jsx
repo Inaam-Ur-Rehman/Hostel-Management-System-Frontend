@@ -1,17 +1,16 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 
 import { Button } from "./ui/button";
-import AddRoomForm from "./AddRoomForm";
 import { Link } from "react-router-dom";
 import { Badge } from "./ui/badge";
 import { EyeIcon } from "lucide-react";
+import UpdateRoomForm from "./UpdateRoomForm";
 
 const RoomCard = ({ room }) => {
   return (
@@ -27,7 +26,7 @@ const RoomCard = ({ room }) => {
                 : "outline"
             }
           >
-            {room.status}
+            {room?.users?.length === room?.capacity ? "Room Full" : room.status}
           </Badge>
         </div>
       </CardHeader>
@@ -50,6 +49,7 @@ const RoomCard = ({ room }) => {
             View
           </Button>
         </Link>
+        <UpdateRoomForm room={room} />
       </CardFooter>
     </Card>
   );

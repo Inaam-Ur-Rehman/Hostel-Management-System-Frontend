@@ -21,20 +21,23 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "./ui/button";
-import roomValidationSchema from "@/validations/room.validation";
-import { useMutation } from "@tanstack/react-query";
+import roomValidationSchema, {
+  updateRoomValidationSchema,
+} from "@/validations/room.validation";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import api from "@/http/api";
 import { toast } from "react-toastify";
 import { queryClient } from "@/App";
-import { PlusIcon } from "lucide-react";
+import { PencilIcon, PlusIcon, RotateCcw, RotateCcwIcon } from "lucide-react";
 
-const AddRoomForm = () => {
+const UpdateRoomForm = ({ room }) => {
   const ref = React.useRef();
+  if (!room) return null;
   const mutation = useMutation({
-    mutationKey: ["add-room"],
-    mutationFn: (data) => api.post("/rooms", data),
+    mutationKey: [`update-room-${room?.id}`],
+    mutationFn: (data) => api.put(`/rooms/${room?.id}`, data),
     onSuccess: () => {
-      toast.success("Room added successfully");
+      toast.success("Room updated successfully");
       form.reset();
       ref.current?.click();
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
@@ -43,25 +46,31 @@ const AddRoomForm = () => {
       toast.error(error?.response?.data?.message || error.message);
     },
   });
-  const form = useForm({
-    resolver: zodResolver(roomValidationSchema),
-    defaultValues: {
-      roomNumber: "",
-      capacity: "",
-      floor: "",
-      status: "AVAILABLE",
-    },
-  });
 
   const onSubmit = async (data) => {
     mutation.mutate(data);
   };
+
+  const form = useForm({
+    resolver: zodResolver(updateRoomValidationSchema),
+    defaultValues: {
+      capacity: "",
+      floor: "",
+      status: "AVAILABLE",
+    },
+    values: {
+      capacity: room?.capacity,
+      floor: room?.floor,
+      status: room?.status,
+    },
+  });
+
   return (
     <Dialog>
       <DialogTrigger ref={ref}>
         <Button variant="outline">
-          <PlusIcon className="w-4 h-4 mr-2" />
-          Add Room
+          <PencilIcon className="w-4 h-4 mr-2" />
+          Edit Room
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -73,28 +82,6 @@ const AddRoomForm = () => {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="roomNumber"
-              render={({ field }) => (
-                <div className="space-y-1 mb-2">
-                  <FormItem>
-                    <FormLabel>Room Number</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Room Number"
-                        {...field}
-                        onChange={(e) => {
-                          field.onChange(parseInt(e.target.value));
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </div>
-              )}
-            />
             <FormField
               control={form.control}
               name="capacity"
@@ -140,8 +127,8 @@ const AddRoomForm = () => {
               )}
             />
             <Button type="submit" className="mt-2">
-              <PlusIcon className="w-4 h-4 mr-2" />
-              Create Room
+              <PencilIcon className="w-4 h-4 mr-2" />
+              Update
             </Button>
           </form>
         </Form>
@@ -150,4 +137,4 @@ const AddRoomForm = () => {
   );
 };
 
-export default AddRoomForm;
+export default UpdateRoomForm;
