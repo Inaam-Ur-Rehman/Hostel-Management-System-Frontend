@@ -1,11 +1,13 @@
 import { useAuthStore } from "@/store";
 import { Fragment, useEffect, useState } from "react";
 import {
+  Banknote,
   Bed,
   Bell,
   CircleUser,
   Home,
   LineChart,
+  MailQuestion,
   Menu,
   MessageCircleQuestion,
   Package,
@@ -73,6 +75,21 @@ const AdminLayout = () => {
       name: "User Requests",
       icon: <MessageCircleQuestion className="h-6 w-6" />,
       path: "/user-requests",
+    },
+    {
+      name: "Complaints",
+      icon: <MailQuestion className="h-6 w-6" />,
+      path: "/complaints",
+    },
+    {
+      name: "Fees",
+      icon: <Banknote className="h-6 w-6" />,
+      path: "/fee",
+    },
+    {
+      name: "Inventory",
+      icon: <Package2 className="h-6 w-6" />,
+      path: "/inventory",
     },
   ];
 

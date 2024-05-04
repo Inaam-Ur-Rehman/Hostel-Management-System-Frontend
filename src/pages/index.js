@@ -15,3 +15,4 @@ export { default as UserRequests } from "./userRequests";
 export { default as ViewUserRequest } from "./userRequests/ViewUserRequest";
 export { default as Complaints } from "./complaints";
 export { default as ViewComplaint } from "./complaints/view";
+export { default as Fee } from "./fee";

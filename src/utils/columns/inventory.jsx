@@ -12,32 +12,25 @@ import { MoreHorizontal } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const columnHelper = createColumnHelper();
-export const complaintsColumns = [
-  columnHelper.accessor("user.name", {
-    header: "User Name",
+export const inventoryColumns = [
+  columnHelper.accessor("item", {
+    header: "Item",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("user.room.roomNumber", {
-    header: "Room Number",
+  columnHelper.accessor("quantity", {
+    header: "Quantity",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("user.profile.phone", {
-    header: "Phone",
+  columnHelper.accessor("unit", {
+    header: "Unit",
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor("status", {
-    header: "Status",
-    cell: (info) => {
-      if (info.getValue() === "PENDING") {
-        return <Badge className="bg-red-500">Pending</Badge>;
-      }
-      if (info.getValue() === "RESOLVED") {
-        return <Badge className="bg-green-500">Resolved</Badge>;
-      }
-    },
+  columnHelper.accessor("price", {
+    header: "Price",
+    cell: (info) => info.getValue(),
   }),
   columnHelper.accessor("createdAt", {
-    header: "Created At",
+    header: "Buy Date",
     cell: (info) => new Date(info.getValue()).toLocaleString(),
   }),
   columnHelper.display({
@@ -53,7 +46,7 @@ export const complaintsColumns = [
         <DropdownMenuContent>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem>
-            <Link to={`/complaints/view/${info.row.original.id}`}>View</Link>
+            <Link to={`/inventory/view/${info.row.original.id}`}>View</Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

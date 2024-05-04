@@ -1,3 +1,6 @@
+import UpdateFeeForm from "@/components/UpdateFeeForm";
+import UpdateUserRequest from "@/components/UpdateRequest";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,14 +11,15 @@ import {
 } from "@/components/ui/card";
 import api from "@/http/api";
 import { useQuery } from "@tanstack/react-query";
+import { PencilIcon } from "lucide-react";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-const ViewComplaint = () => {
+const ViewFee = () => {
   const { id } = useParams();
   const { data, isLoading, error, isLoadingError, isError } = useQuery({
-    queryKey: [`user-complaint-${id}`],
-    queryFn: () => api.get(`/complaints/${id}`),
+    queryKey: [`user-fee-${id}`],
+    queryFn: () => api.get(`/fee/${id}`),
     select: (data) => data.data.data,
   });
 
@@ -30,21 +34,21 @@ const ViewComplaint = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>View User Request</CardTitle>
+        <CardTitle>View Fee</CardTitle>
         <CardDescription>
-          You can see the content of the user request here.
+          You can see the content of the fee here.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
         <h2 className="text-lg border  p-2 rounded-md">{data?.user?.name}</h2>
         <p className="text-lg border  p-2 rounded-md">{data?.user?.email}</p>
-        <p className="text-lg border  p-2 rounded-md py-4">{data?.message}</p>
-        <p className="text-lg border  p-2 rounded-md">{data?.status}</p>
+        <p className="text-lg border  p-2 rounded-md">{data?.amount}</p>
+        <p className="text-lg border  p-2 rounded-md">{data?.month}</p>
+        <p className="text-lg border  p-2 rounded-md py-4">
+          {data?.note ? data?.note : "Note is empty"}
+        </p>
         <p className="text-lg border  p-2 rounded-md">
-          {new Date(data?.createdAt)
-            .toISOString()
-            .replace(/T/, " ")
-            .replace(/\..+/, "")}
+          {new Date(data?.createdAt).toLocaleString()}
         </p>
         <p className="text-lg border  p-2 rounded-md">
           Room No. {data?.user?.room?.roomNumber}
@@ -53,8 +57,10 @@ const ViewComplaint = () => {
           Floor No. {data?.user?.room?.floor}
         </p>
       </CardContent>
+      <CardFooter>
+        <UpdateFeeForm fee={data} />
+      </CardFooter>
     </Card>
   );
 };
-
-export default ViewComplaint;
+export default ViewFee;

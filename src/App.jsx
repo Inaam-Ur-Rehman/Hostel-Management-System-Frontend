@@ -27,7 +27,13 @@ import {
   ViewUserRequest,
   Complaints,
   ViewComplaint,
+  Fee,
 } from "./pages";
+import ViewFee from "./pages/fee/view";
+import CreateFee from "./pages/fee/create";
+import Inventory from "./pages/inventory";
+import CreateInventory from "./pages/inventory/create";
+import ViewInventory from "./pages/inventory/view";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -107,6 +113,30 @@ const router = createBrowserRouter([
       {
         path: "complaints/view/:id",
         element: <ViewComplaint />,
+      },
+      {
+        path: "fee",
+        element: <Fee />,
+      },
+      {
+        path: "fee/create",
+        element: <CreateFee />,
+      },
+      {
+        path: "fee/view/:id",
+        element: <ViewFee />,
+      },
+      {
+        path: "inventory",
+        element: <Inventory />,
+      },
+      {
+        path: "inventory/create",
+        element: <CreateInventory />,
+      },
+      {
+        path: "inventory/view/:id",
+        element: <ViewInventory />,
       },
     ],
   },
