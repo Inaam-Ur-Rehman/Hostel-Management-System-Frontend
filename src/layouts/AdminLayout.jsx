@@ -52,6 +52,10 @@ const AdminLayout = () => {
     })();
   }, []);
 
+  if (!user?.data?.id) {
+    return window.location.replace("/login");
+  }
+
   const menu = [
     {
       name: "Dashboard",
