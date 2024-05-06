@@ -43,7 +43,7 @@ import { useForm } from "react-hook-form";
 import { Link, redirect, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const Edit = () => {
+const EditUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const deleteMutation = useMutation({
@@ -551,4 +551,4 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+export default EditUser;

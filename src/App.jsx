@@ -9,33 +9,32 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import AdminLayout from "./layouts/AdminLayout";
-import {
-  Home,
-  Rooms,
-  ViewRoom,
-  Users,
-  ViewUser,
-  EditUser,
-  CreateUser,
-  CreateProfile,
-  AssignRoom,
-  Menu,
-  CreateMenu,
-  EditMenu,
-  Login,
-  UserRequests,
-  ViewUserRequest,
-  Complaints,
-  ViewComplaint,
-  Fee,
-  ForgotPassword,
-  ResetPassword,
-} from "./pages";
+
 import ViewFee from "./pages/fee/view";
 import CreateFee from "./pages/fee/create";
 import Inventory from "./pages/inventory";
 import CreateInventory from "./pages/inventory/create";
 import ViewInventory from "./pages/inventory/view";
+import Home from "./pages/Home";
+import Rooms from "./pages/rooms";
+import ViewRoom from "./pages/rooms/ViewRoom";
+import Users from "./pages/users";
+import ViewUser from "./pages/users/ViewUser";
+import EditUser from "./pages/users/EditUser";
+import CreateUser from "./pages/users/CreateUser";
+import CreateProfile from "./pages/profile/CreateProfile";
+import AssignRoom from "./pages/assignRoom";
+import Menu from "./pages/menu";
+import CreateMenu from "./pages/menu/CreateMenu";
+import EditMenu from "./pages/menu/EditMenu";
+import UsersRequests from "./pages/userRequests";
+import ViewUserRequest from "./pages/userRequests/ViewUserRequest";
+import Complaints from "./pages/complaints";
+import ViewComplaint from "./pages/complaints/view";
+import Fee from "./pages/fee";
+import Login from "./pages/Login";
+import ForgotPassword from "./pages/forgot-password";
+import ResetPassword from "./pages/reset";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -102,7 +101,7 @@ const router = createBrowserRouter([
       },
       {
         path: "user-requests",
-        element: <UserRequests />,
+        element: <UsersRequests />,
       },
       {
         path: "user-requests/view/:id",
