@@ -38,7 +38,6 @@ import {
 } from "./ui/select";
 
 const UpdateFeeForm = ({ fee }) => {
-  console.log(fee);
   const [users, setUsers] = React.useState([]);
   const [selectedUser, setSelectedUser] = React.useState(fee?.user);
   useEffect(() => {

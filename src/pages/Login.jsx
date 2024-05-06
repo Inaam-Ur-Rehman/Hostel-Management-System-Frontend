@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 import Logo from "../assets/logo.svg";
-import { Form, useNavigate } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/utils/mutations/login";
 import { toast } from "react-toastify";
@@ -14,6 +14,10 @@ const Login = () => {
     mutationKey: ["login"],
     mutationFn: login,
     onSuccess: ({ data }) => {
+      if (data?.data?.user?.role === "USER") {
+        toast.error("You are not authorized to login here");
+        return;
+      }
       setUser(data?.data);
       toast.success("Login successful");
       window.location.replace("/");
@@ -98,12 +102,12 @@ const Login = () => {
                   </div>
 
                   <div className="text-sm leading-6">
-                    <a
-                      href="#"
+                    <Link
+                      to="/forgot-password"
                       className="font-semibold text-theme-green hover:text-theme-green/90"
                     >
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
                 </div>
 

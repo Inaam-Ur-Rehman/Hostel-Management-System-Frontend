@@ -28,6 +28,8 @@ import {
   Complaints,
   ViewComplaint,
   Fee,
+  ForgotPassword,
+  ResetPassword,
 } from "./pages";
 import ViewFee from "./pages/fee/view";
 import CreateFee from "./pages/fee/create";
@@ -143,6 +145,14 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "forgot-password",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "reset/:token",
+    element: <ResetPassword />,
   },
 ]);
 

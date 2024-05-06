@@ -7,24 +7,9 @@ import {
 } from "@/components/ui/card";
 import api from "@/http/api";
 import { useQuery } from "@tanstack/react-query";
-import React, { useMemo } from "react";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import React from "react";
+import { createColumnHelper } from "@tanstack/react-table";
+
 import {
   DropdownMenu,
   DropdownMenuContent,

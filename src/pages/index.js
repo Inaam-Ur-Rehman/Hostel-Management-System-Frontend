@@ -16,3 +16,5 @@ export { default as ViewUserRequest } from "./userRequests/ViewUserRequest";
 export { default as Complaints } from "./complaints";
 export { default as ViewComplaint } from "./complaints/view";
 export { default as Fee } from "./fee";
+export { default as ForgotPassword } from "./forgot-password";
+export { default as ResetPassword } from "./reset";
