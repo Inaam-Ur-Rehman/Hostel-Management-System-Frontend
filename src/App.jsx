@@ -23,7 +23,7 @@ import ViewUser from "./pages/users/ViewUser";
 import EditUser from "./pages/users/EditUser";
 import CreateUser from "./pages/users/CreateUser";
 import CreateProfile from "./pages/profile/CreateProfile";
-import AssignRoom from "./pages/assignRoom";
+import AssignRoom from "./pages/AssignRoom";
 import Menu from "./pages/menu";
 import CreateMenu from "./pages/menu/CreateMenu";
 import EditMenu from "./pages/menu/EditMenu";
